@@ -27,11 +27,11 @@ const sendPost = async (url, data, handler) => {
     }
 };
 
-const hideError=()=>{
+const hideError = () => {
     document.getElementById('domoMessage').classList.add('hidden');
 };
 
-module.exports={
+module.exports = {
     handleError,
     sendPost,
     hideError,
