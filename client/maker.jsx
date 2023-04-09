@@ -18,8 +18,35 @@ const handleDomo = (e) => {
 
     helper.sendPost(e.target.action, { name, age, color }, loadDomosFromServer);
 
+    let namesDisplay = document.querySelector('#domosNames').textContent;
+    let justNames = namesDisplay.split(": ").pop();
+
+    namesDisplay.textContent = "[Out Of Date!]Domo names in Alphatbetical Order: " + justNames;
+
     return false;
 };
+const newButton = () => {
+    let domos = document.querySelector('.domoList').querySelectorAll('.domo');
+    let namesDisplay = document.querySelector('#domosNames');
+
+    let domoNames = [];
+
+
+
+    for (let d = 0; d < domos.length; d++) {
+        let nameString = domos[d].querySelector('.domoName').textContent.toLowerCase();
+        let namePop = nameString.split(": ").pop();
+        domoNames.push(namePop);
+    }
+
+    let orderedNames = domoNames.sort();
+    const capitalizedNames = orderedNames.map(name => name.charAt(0).toUpperCase() + name.slice(1));
+
+    namesDisplay.textContent = `Current Domo names in Alphabetical order: ${capitalizedNames}`;
+
+
+
+}
 
 const DomoForm = (props) => {
     return (
@@ -36,9 +63,24 @@ const DomoForm = (props) => {
             <label htmlFor="color">Color:</label>
             <input type="text" name="color" id="domoColor" placeholder='Domo Color' />
             <input type="submit" value="Make Domo" className='makeDomoSubmit' />
+
+            <button type="button" onClick={newButton}>Get names in alphabetical order</button>
         </form>
     );
 };
+
+const DomoAgeList = (props) => {
+    if (props.domos.length === 0) {
+        return (
+            <div className='domoList'>
+                <h3 className="emptyDomo">No Domos Yet!</h3>
+            </div>
+        );
+    };
+
+    console.log(props.domos);
+
+}
 
 const DomoList = (props) => {
     if (props.domos.length === 0) {
@@ -69,12 +111,15 @@ const DomoList = (props) => {
 const loadDomosFromServer = async () => {
     const response = await fetch('/getDomos');
     const data = await response.json();
-    console.log(data.domos);
+
 
     ReactDOM.render(
         <DomoList domos={data.domos} />,
         document.getElementById('domos')
     );
+    if (data) {
+        newButton();
+    }
 };
 
 const init = () => {
