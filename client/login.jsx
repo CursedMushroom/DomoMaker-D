@@ -81,8 +81,8 @@ const SignupWindow = (props) => {
 }
 
 const init = () => {
-    const loginButton = document.querySelector('#loginButton');
-    const signupButton = document.querySelector('#signupButton');
+    const loginButton = document.getElementById('loginButton');
+    const signupButton = document.getElementById('signupButton');
 
     loginButton.addEventListener('click', (e) => {
         e.preventDefault();
